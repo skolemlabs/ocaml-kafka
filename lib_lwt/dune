@@ -4,5 +4,10 @@
  (libraries kafka lwt.unix)
  (c_names ocaml_lwt_kafka)
  ; the -I and -L flags are required for freebsd, harmless elsewhere
- (c_flags -I/usr/local/include)
- (c_library_flags -L/usr/local/lib -lrdkafka -lpthread -lz))
+ (c_flags (:include c_flags.sexp))
+ (c_library_flags (:include c_library_flags.sexp)))
+
+(rule
+  (targets c_flags.sexp c_library_flags.sexp)
+  (deps (:gen ../discover/discover.exe))
+  (action (run %{gen})))
